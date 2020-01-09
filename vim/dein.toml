@@ -1,0 +1,25 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+hook_source = 'call shimies#init#vim_indent_guides#hook_source()'
+
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+
+[[plugins]]
+repo = 'kassio/neoterm'
+if = "has('nvim')"
+on_cmd = [ 'T', 'Tnew', 'Topen' ]
+
+
+# vim: ft=yaml et ts=4 sts=4 sw=4

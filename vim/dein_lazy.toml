@@ -1,0 +1,343 @@
+[[plugins]]
+repo = 'Shougo/unite.vim'
+on_cmd = ['Unite', 'UniteResume']
+hook_add = 'call shimies#init#unite#hook_add()'
+hook_post_source = 'call shimies#init#unite#hook_post_source()'
+
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+depends = ['context_filetype.vim', 'vimproc.vim']
+if = "!has('nvim') && has('lua')"
+on_event = ['InsertEnter']
+hook_source = 'call shimies#init#neocomplete#hook_source()'
+
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+depends = ['context_filetype.vim']
+if = "has('nvim')"
+on_event = ['InsertEnter']
+hook_source = 'call shimies#init#deoplete#hook_source()'
+
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+on_source = ['neocomplete.vim', 'deoplete.nvim']
+
+
+[[plugins]]
+repo = 'Shougo/vimfiler.vim'
+depends = ['unite.vim', 'vimproc.vim']
+on_cmd = ['VimFiler', 'VimFilerBufferDir', 'VimFilerDouble', 'VimFilerExplorer', 'VimFilerTab']
+hook_add = 'call shimies#init#vimfiler#hook_add()'
+hook_source = 'call shimies#init#vimfiler#hook_source()'
+
+
+[[plugins]]
+repo = 'Shougo/neosnippet'
+depends = ['neosnippet-snippets']
+on_event = ['InsertEnter']
+hook_source = 'call shimies#init#neosnippet#hook_source()'
+
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+on_source = ['neosnippet']
+
+
+[[plugins]]
+repo = 'Shougo/vimshell.vim'
+depends = ['vimproc.vim']
+on_cmd = ['VimShell', 'VimShellBufferDir', 'VimShellInteractive', 'VimShellPop']
+
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_source = ['unite.vim']
+hook_add = '''
+nnoremap <silent> [unite]f :<C-u>Unite neomru/file<CR>
+nnoremap <silent> [unite]d :<C-u>Unite neomru/directory<CR>
+'''
+
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_source = ['unite.vim']
+hook_add = 'nnoremap <silent> [unite]h :<C-u>Unite history/yank<CR>'
+
+
+[[plugins]]
+repo = 'Shougo/tabpagebuffer.vim'
+on_source = ['unite.vim']
+hook_add = 'nnoremap <silent> [unite]B :<C-u>Unite buffer_tab<CR>'
+
+
+[[plugins]]
+repo = 'Shougo/unite-outline'
+on_source = ['unite.vim']
+hook_add = 'call shimies#init#unite_outline#hook_source()'
+
+
+[[plugins]]
+repo = 'kana/vim-operator-user'
+
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+
+[[plugins]]
+repo = 'kana/vim-operator-replace'
+depends = ['vim-operator-user']
+on_event = ['VimEnter']
+hook_post_source = 'map _ <Plug>(operator-replace)'
+
+
+[[plugins]]
+repo = 'kana/vim-textobj-indent'
+depends = ['vim-textobj-user']
+on_event = ['VimEnter']
+hook_source = 'call shimies#init#vim_textobj_indent#hook_source()'
+
+
+[[plugins]]
+repo = 'kana/vim-smartinput'
+on_event = ['InsertEnter']
+
+
+[[plugins]]
+repo = 'rhysd/vim-operator-surround'
+on_event = ['VimEnter']
+hook_source = 'call shimies#init#vim_operator_surround#hook_source()'
+
+
+[[plugins]]
+repo = 'scrooloose/nerdcommenter'
+on_map = ['<Leader>c']
+hook_source = 'let g:NERDSpaceDelims = 1'
+
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+on_cmd = ['QuickRun']
+on_map = ['<Leader>r']
+hook_source = 'call shimies#init#vim_quickrun#hook_source()'
+
+
+[[plugins]]
+repo = 'mattn/quickrunex-vim'
+on_source = ['vim-quickrun']
+
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+on_cmd = ['TagbarToggle']
+
+
+[[plugins]]
+repo = 'xolox/vim-easytags'
+on_cmd = ['UpdateTags', 'HighlightTags']
+on_ft = ['verilog', 'verilog_systemverilog']
+hook_source = 'call shimies#init#vim_easytags#hook_source()'
+
+
+[[plugins]]
+repo = 'vim-jp/cpp-vim'
+on_ft = ['cpp']
+
+
+[[plugins]]
+repo = 'Rip-Rip/clang_complete'
+# if = "!has('nvim')"
+on_ft = ['c', 'cpp']
+hook_source = 'call shimies#init#clang_complete#hook_source()'
+
+
+[[plugins]]
+repo = 'Shougo/vim-javacomplete2'
+on_ft = ['java']
+hook_source = 'call shimies#init#vim_javacomplete2#hook_source()'
+
+
+[[plugins]]
+repo = 'davidhalter/jedi-vim'
+on_ft = ['python', 'python3', 'djangohtml']
+hook_source = 'call shimies#init#jedi_vim#hook_source()'
+
+
+[[plugins]]
+repo = 'hynek/vim-python-pep8-indent'
+on_ft = ['python', 'python3', 'djangohtml']
+
+
+[[plugins]]
+repo = 'bps/vim-textobj-python'
+depends = ['vim-textobj-user']
+on_ft = ['python', 'python3', 'djangohtml']
+hook_source = 'call shimies#init#vim_textobj_python#hook_source()'
+
+
+[[plugins]]
+repo = 'hdima/python-syntax'
+on_ft = ['python', 'python3', 'djangohtml']
+hook_source = 'let python_highlight_all = 1'
+
+
+[[plugins]]
+repo = 'jmcantrell/vim-virtualenv'
+on_ft = ['python', 'python3', 'djangohtml']
+
+
+[[plugins]]
+repo = 'vhda/verilog_systemverilog.vim'
+on_ft = ['verilog', 'verilog_systemverilog']
+hook_source = 'call shimies#init#verilog_systemverilog#hook_source()'
+
+
+[[plugins]]
+repo = 'let-def/ocp-indent-vim'
+if = "executable('opam')"
+on_ft = ['ocaml']
+
+
+[[plugins]]
+repo = 'itchyny/vim-haskell-indent'
+on_ft = ['haskell']
+
+
+[[plugins]]
+repo = 'derekwyatt/vim-scala'
+on_ft = ['scala']
+
+
+[[plugins]]
+repo = 'sudar/vim-arduino-syntax'
+on_ft = ['arduino']
+
+
+[[plugins]]
+repo = 'vim-latex/vim-latex'
+on_ft = ['tex']
+hook_source = 'call shimies#init#vim_latex#hook_source()'
+hook_post_source = 'call shimies#init#vim_latex#hook_post_source()'
+
+
+# [[plugins]]
+# repo = 'lervag/vimtex'
+# on_ft = ['tex']
+
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
+on_ft = ['html', 'css']
+
+
+[[plugins]]
+repo = 'hail2u/vim-css3-syntax'
+on_ft = ['html', 'css']
+
+
+[[plugins]]
+repo = 'dag/vim-fish'
+on_ft = ['fish']
+
+
+[[plugins]]
+repo = 'tmux-plugins/vim-tmux'
+on_ft = ['tmux']
+
+
+[[plugins]]
+repo = 'scrooloose/syntastic'
+on_cmd = ['Errors', 'SyntasticCheck', 'SyntasticToggleMode', 'SyntasticReset']
+hook_add = 'call shimies#init#syntastic#hook_add()'
+hook_source = 'call shimies#init#syntastic#hook_source()'
+
+
+[[plugins]]
+repo = 'h1mesuke/vim-alignta'
+on_cmd = ['Align', 'Alignta']
+on_source = ['unite.vim']
+hook_add = 'nnoremap <silent> [unite]a :<C-u>Unite alignta<CR>'
+
+
+[[plugins]]
+repo = 't9md/vim-quickhl'
+on_cmd = ['QuickhlManualAdd', 'QuickhlManualDisable', 'QuickhlManualEnable', 'QuickhlManualList']
+on_map = ['<Plug>(quickhl-manual-this)', '<Plug>(quickhl-manual-reset)', '<Plug>(quickhl-manual-toggle)', '<Plug>(quickhl-cword-toggle)', '<Plug>(quickhl-tag-toggle)']
+hook_add = 'call shimies#init#vim_quickhl#hook_add()'
+hook_source = 'call shimies#init#vim_quickhl#hook_source()'
+
+
+[[plugins]]
+repo = 'mbbill/undotree'
+on_cmd = ['UndotreeFocus', 'UndotreeShow', 'UndotreeToggle']
+
+
+[[plugins]]
+repo = 'itchyny/calendar.vim'
+on_cmd = ['Calendar']
+hook_source = '''
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+let g:calendar_first_day = 'sunday'
+let g:calendar_views = ['year', 'month', 'week', 'day', 'clock']
+'''
+
+
+[[plugins]]
+repo = 'itchyny/thumbnail.vim'
+on_cmd = ['Thumbnail']
+
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+on_cmd = ['OpenBrowser', 'OpenBrowserSearch', 'OpenBrowserSmartSearch']
+on_func = ['OpenBrowser']
+on_map = ['<Plug>(openbrowser-smart-search)']
+hook_add = 'call shimies#init#open_browser#hook_add()'
+hook_source = 'call shimies#init#open_browser#hook_source()'
+
+
+[[plugins]]
+repo = 'kannokanno/previm'
+depends = ['open-browser.vim']
+on_ft = ['markdown']
+hook_source = '''
+nnoremap <silent> [browser]p :<C-u>PrevimOpen<CR>
+nnoremap <silent> [browser]r :<C-u>call previm#refresh()<CR>
+'''
+
+
+[[plugins]]
+repo = 'gregsexton/gitv'
+depends = ['vim-fugitive']
+on_cmd = ['Gitv']
+
+
+[[plugins]]
+repo = 'mattn/gist-vim'
+depends = ['webapi-vim']
+on_cmd = ['Gist']
+hook_source = 'let g:gist_detect_filetype = 1'
+
+
+[[plugins]]
+repo = 'mattn/webapi-vim'
+on_source = ['gist-vim']
+
+
+[[plugins]]
+repo = 'tyru/restart.vim'
+on_cmd = ['Restart']
+on_event = ['GUIEnter']
+
+
+[[plugins]]
+repo = 'vim-scripts/fcitx.vim'
+if = "has('unix')"
+on_event = ['InsertEnter']
+
+
+# vim: ft=yaml et ts=4 sts=4 sw=4

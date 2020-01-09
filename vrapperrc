@@ -1,0 +1,108 @@
+" Clipboard
+set clipboard=unnamedplus
+
+" IM/IME auto disabler
+set imdisable
+
+" Scrolling
+set scrolljump=1
+set scrolloff=5
+
+" Indent control
+set shiftwidth=4     " automatic indent width
+set autoindent
+set smartindent
+
+" Searching
+set incsearch     " incremental serach
+set hlsearch      " highlight search
+set nowrapscan    " search wrap around the end of file
+set ignorecase    " ignore case in search patterns
+set smartcase     " no ignore case when pattern has uppercase
+
+
+
+" --------------------------------------------------
+"  Option configurations (for appearance)
+" --------------------------------------------------
+" Visualize blank characters
+set list    " enable showing listchars
+" set listchars=tab:>-,trail:-,extends:>,precedes:<,nbsp:%
+
+" Visual settings
+set number           " show line number
+set cursorcolumn    " highlight screen column of cursor
+
+
+
+" --------------------------------------------------
+"  Key-mappings
+" --------------------------------------------------
+nnoremap Y y$
+" vnoremap * "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>
+" vnoremap # "vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>
+
+" Disable searching or its highlight
+" nnoremap <Esc><Esc> :nohlsearch<CR>
+" nnoremap <Esc><CR> :let @/ = ''<CR>
+
+" Swap : for ; to enter command-mode
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
+
+" Redraw, line with searched word at center of window
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+
+" Make it unavailable
+noremap Q <Nop>
+noremap ZZ <Nop>
+noremap ZQ <Nop>
+
+" Launch frequently used command for convenience
+" nnoremap <expr> cd ':lcd ' . expand('%:h') . '<CR>'
+" nnoremap <expr> <Space>g ':vimgrep /\<' . expand('<cword>') . '\>/gj **/*.' . expand('%:e')
+" nnoremap <expr> <Space>G ':silent grep! ' . expand('<cword>') . ' *'
+
+" Move action in insert-mode
+" inoremap <expr> <C-a> search('^\s\s*\%#', 'bcn') ? "\<C-o>0" : "\<C-o>^"
+" inoremap        <C-e> <C-o>$
+" inoremap        <C-f> <Right>
+" inoremap        <C-b> <Left>
+
+" Escape automatically a letter of backslash or question
+" cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+" cnoremap <expr> ? getcmdtype() == '?' ? '\?' : '?'
+
+nnoremap [buffer] <Nop>
+nmap <Space>b [buffer]
+noremap [buffer] :buffer<Space>
+noremap [buffer]b :buffers<CR>
+noremap [buffer]B :buffers!<CR>
+noremap [buffer]n :bnext<CR>
+noremap [buffer]p :bprevious<CR>
+noremap [buffer]d :bdelete<CR>
+noremap [buffer]w :bwipeout<CR>
+
+nnoremap [quickfix] <Nop>
+nmap <Space>q [quickfix]
+nnoremap [quickfix]q :copen<CR>
+nnoremap [quickfix]n :cnext<CR>
+nnoremap [quickfix]p :cprevious<CR>
+nnoremap [quickfix]g :cfirst<CR>
+nnoremap [quickfix]G :clast<CR>
+
+nnoremap [switch] <Nop>
+nmap <Space>s [switch]
+nnoremap [switch]s :setlocal spell!<CR>:setlocal spell?<CR>
+nnoremap [switch]l :setlocal list!<CR>:setlocal list?<CR>
+nnoremap [switch]t :setlocal expandtab!<CR>:setlocal expandtab?<CR>
+nnoremap [switch]w :setlocal wrap!<CR>:setlocal wrap?<CR>
+nnoremap [switch]n :setlocal number!<CR>:setlocal number?<CR>
+nnoremap [switch]r :setlocal relativenumber!<CR>:setlocal relativenumber?<CR>

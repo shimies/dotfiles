@@ -1,0 +1,30 @@
+! ------------------
+! Disable Caps_Lock
+! ------------------
+clear Lock
+
+
+! ------------------
+! Replace Caps_Lock with Control_L
+!   - 37 (0x25) is a default physical keycode for Control_L
+!   - 66 (0x42) is a default physical keycode for Caps_Lock
+! ------------------
+remove Control = Control_L
+keysym Control_L =
+keycode 0x42 = Control_L
+add Control = Control_L
+
+
+! ------------------
+! Modify to adopt VIM mode
+!   - 43 (0x2B) is a default physical keycode for H
+!   - 44 (0x2C) is a default physical keycode for J
+!   - 45 (0x2D) is a default physical keycode for K
+!   - 46 (0x2E) is a default physical keycode for L
+! Assign Control_L to one of Mode_switch enablers
+! ------------------
+keycode 0x25 = Mode_switch
+keycode 0x2B = h H Left Left
+keycode 0x2C = j J Down Down
+keycode 0x2D = k K Up Up
+keycode 0x2E = l L Right Right
