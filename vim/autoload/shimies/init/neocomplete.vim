@@ -42,8 +42,6 @@ function! shimies#init#neocomplete#hook_source() abort
         \ 'php': '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?',
         \ 'python': '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*',
         \ 'javascript': '[^.[:digit:] *\t]\%(\.\)\%(\h\w*\)\?',
-        \ 'ocaml': '[^. *\t]\.\w*\|\h\w*|#',
-        \ 'verilog_systemverilog': '[^.[:digit:] *\t]\%(\.\|->\)\w*',
         \ }
 
     " Key-mappings {{{

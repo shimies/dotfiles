@@ -22,17 +22,7 @@ function! shimies#init#vim_quickrun#hook_source() abort
         \     'type': 'cpp',
         \     'cmdopt': '-Wall -Wl,--no-as-needed `pkg-config --libs --cflags opencv` -std=c++11',
         \ },
-        \ 'verilog': {
-        \     'command': 'iverilog',
-        \     'exec': ['%c %o %s -o %s:p:r', '%s:p:r %a'],
-        \     'cmdopt': '-g2005',
-        \     'tempfile': '%{tempname()}.v',
-        \     'hook/sweep/files': '%S:p:r',
-        \ },
-        \ 'verilog_systemverilog': {
-        \     'type': 'verilog',
-        \ },
-        \ }
+    \ }
 
     " Key-mappings {{{
     nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"

@@ -7,11 +7,13 @@ function! shimies#init#deoplete#hook_source() abort
 
     " Usual completion features
     let g:deoplete#enable_ignore_case = 1
-    let g:deoplete#enable_smart_case = 1
     let g:deoplete#enable_camel_case = 0
 
-    " " For completion that is heavy and have many candidates
-    let g:deoplete#max_list = 1000
+    " some options are deprecated now
+    " such as
+    "   smart case
+    "   limiting max number of candidates
+    " use call deoplete#custom#options() instead
 
     " " Omni completion
     let g:deoplete#omni_patterns = {}

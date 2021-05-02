@@ -4,9 +4,6 @@ function! shimies#init#neosnippet#hook_source() abort
         \ }
     let g:neosnippet#snippets_directory = $MYVIMHOME . '/snippets'
 
-    let g:neosnippet#scope_aliases = {}
-    let g:neosnippet#scope_aliases['verilog_systemverilog'] = 'verilog'
-
     " For snippet_complete marker.
     " if has('conceal')
     "     set conceallevel=2 concealcursor=i
