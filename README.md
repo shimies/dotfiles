@@ -14,7 +14,7 @@ The existing file is renamed by removing the prefix `.` from and adding the suff
 To prevent all the configuration files from being linked, simply add a if-then-continue statement after the following in `linker.sh`.
 If the filename denoted by `$filename` matches a pattern or a predicate on the filename holds, `continue` lets the flow move forward to the next iteration, skipping the linking.
 ```sh
-# prevent files from linking according to conditions
+# prevent files from being linked according to conditions
 ### if a filename simply matches a pattern
 [ "$filename" = "README.md" ] && continue
 [ "$filename" = "vrapperrc" ] && continue

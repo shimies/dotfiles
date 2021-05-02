@@ -20,7 +20,7 @@ for i in "$dotfiles"/*; do
         # if the destination exists and is an actual file, rename it for backup
         [ -e "$dest" ] && [ ! -L "$dest" ] && mv "$dest" "$HOME/$filename.bak"
 
-        # prevent files from linking according to conditions
+        # prevent files from being linked according to conditions
         ### if a filename simply matches a pattern
         [ "$filename" = "README.md" ] && continue
         [ "$filename" = "vrapperrc" ] && continue
