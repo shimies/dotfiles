@@ -1,42 +1,36 @@
 [[plugins]]
 repo = 'Shougo/unite.vim'
-on_cmd = ['Unite', 'UniteResume']
+if = "!(has('python3') && (has('nvim') || v:version >= 800))"
+on_event = ['VimEnter']
 hook_add = 'call shimies#init#unite#hook_add()'
 hook_post_source = 'call shimies#init#unite#hook_post_source()'
 
 
 [[plugins]]
+repo = 'Shougo/denite.nvim'
+if = "+(has('python3') && (has('nvim') || v:version >= 800))"
+on_event = ['VimEnter']
+hook_add = 'call shimies#init#denite#hook_add()'
+hook_post_source = 'call shimies#init#denite#hook_post_source()'
+
+
+[[plugins]]
 repo = 'Shougo/neocomplete.vim'
-depends = ['context_filetype.vim', 'vimproc.vim']
-if = "!has('nvim') && has('lua')"
+depends = ['vimproc.vim']
+if = "!(has('nvim') || v:version >= 801) && has('lua')"
 on_event = ['InsertEnter']
 hook_source = 'call shimies#init#neocomplete#hook_source()'
 
 
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
-depends = ['context_filetype.vim']
-if = "has('nvim')"
+if = "+(has('nvim') || v:version >= 801) && has('python3')"
 on_event = ['InsertEnter']
 hook_source = 'call shimies#init#deoplete#hook_source()'
 
 
 [[plugins]]
-repo = 'Shougo/context_filetype.vim'
-on_source = ['neocomplete.vim', 'deoplete.nvim']
-
-
-[[plugins]]
-repo = 'Shougo/vimfiler.vim'
-depends = ['unite.vim', 'vimproc.vim']
-on_cmd = ['VimFiler', 'VimFilerBufferDir', 'VimFilerDouble', 'VimFilerExplorer', 'VimFilerTab']
-hook_add = 'call shimies#init#vimfiler#hook_add()'
-hook_source = 'call shimies#init#vimfiler#hook_source()'
-
-
-[[plugins]]
 repo = 'Shougo/neosnippet'
-depends = ['neosnippet-snippets']
 on_event = ['InsertEnter']
 hook_source = 'call shimies#init#neosnippet#hook_source()'
 
@@ -47,6 +41,35 @@ on_source = ['neosnippet']
 
 
 [[plugins]]
+repo = 'Shougo/vimfiler.vim'
+depends = ['unite.vim']
+if = "!(has('python3') && (has('nvim') || v:version >= 802))"
+on_cmd = ['VimFiler', 'VimFilerBufferDir', 'VimFilerDouble', 'VimFilerExplorer', 'VimFilerTab']
+hook_add = 'call shimies#init#vimfiler#hook_add()'
+hook_source = 'call shimies#init#vimfiler#hook_source()'
+
+
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+if = "+(has('python3') && (has('nvim') || v:version >= 802))"
+on_cmd = ['Defx']
+hook_add = 'call shimies#init#defx#hook_add()'
+hook_source = 'call shimies#init#defx#hook_source()'
+
+
+[[plugins]]
+repo = 'roxma/nvim-yarp'
+if = "!has('nvim')"
+on_source = ['denite.nvim', 'deoplete.nvim', 'defx.nvim']
+
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+if = "!has('nvim')"
+on_source = ['denite.nvim', 'deoplete.nvim', 'defx.nvim']
+
+
+[[plugins]]
 repo = 'Shougo/vimshell.vim'
 depends = ['vimproc.vim']
 on_cmd = ['VimShell', 'VimShellBufferDir', 'VimShellInteractive', 'VimShellPop']
@@ -54,23 +77,28 @@ on_cmd = ['VimShell', 'VimShellBufferDir', 'VimShellInteractive', 'VimShellPop']
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
-on_source = ['unite.vim']
-hook_add = '''
-nnoremap <silent> [unite]f :<C-u>Unite neomru/file<CR>
-nnoremap <silent> [unite]d :<C-u>Unite neomru/directory<CR>
+on_source = ['unite.vim', 'denite.nvim']
+hook_source = '''
+if dein#is_sourced('unite.vim')
+    nnoremap <silent> [unite]f :<C-u>Unite neomru/file<CR>
+    nnoremap <silent> [unite]d :<C-u>Unite neomru/directory<CR>
+elseif dein#is_sourced('denite.nvim')
+    nnoremap <silent> [denite]f :<C-u>Denite file_mru<CR>
+    nnoremap <silent> [denite]d :<C-u>Denite directory_mru<CR>
+endif
 '''
 
 
 [[plugins]]
 repo = 'Shougo/neoyank.vim'
-on_source = ['unite.vim']
-hook_add = 'nnoremap <silent> [unite]h :<C-u>Unite history/yank<CR>'
-
-
-[[plugins]]
-repo = 'Shougo/tabpagebuffer.vim'
-on_source = ['unite.vim']
-hook_add = 'nnoremap <silent> [unite]B :<C-u>Unite buffer_tab<CR>'
+on_source = ['unite.vim', 'denite.nvim']
+hook_source = '''
+if dein#is_sourced('unite.vim')
+    nnoremap <silent> [unite]h :<C-u>Unite history/yank<CR>
+elseif dein#is_sourced('denite.nvim')
+    nnoremap <silent> [denite]h :<C-u>Denite neoyank<CR>
+endif
+'''
 
 
 [[plugins]]
@@ -107,6 +135,12 @@ on_event = ['InsertEnter']
 
 
 [[plugins]]
+repo = 'kassio/neoterm'
+if = "has('nvim')"
+on_cmd = ['T', 'Tnew', 'Tclear', 'Tkill']
+
+
+[[plugins]]
 repo = 'rhysd/vim-operator-surround'
 on_event = ['VimEnter']
 hook_source = 'call shimies#init#vim_operator_surround#hook_source()'
@@ -133,13 +167,6 @@ on_source = ['vim-quickrun']
 [[plugins]]
 repo = 'majutsushi/tagbar'
 on_cmd = ['TagbarToggle']
-
-
-[[plugins]]
-repo = 'xolox/vim-easytags'
-on_cmd = ['UpdateTags', 'HighlightTags']
-on_ft = ['verilog', 'verilog_systemverilog']
-hook_source = 'call shimies#init#vim_easytags#hook_source()'
 
 
 [[plugins]]
@@ -172,6 +199,15 @@ on_ft = ['python', 'python3', 'djangohtml']
 
 
 [[plugins]]
+repo = 'leafgarland/typescript-vim'
+on_ft = ['typescript']
+
+
+[[plugins]]
+repo = 'Quramy/tsuquyomi'
+on_ft = ['typescript']
+
+[[plugins]]
 repo = 'bps/vim-textobj-python'
 depends = ['vim-textobj-user']
 on_ft = ['python', 'python3', 'djangohtml']
@@ -187,12 +223,6 @@ hook_source = 'let python_highlight_all = 1'
 [[plugins]]
 repo = 'jmcantrell/vim-virtualenv'
 on_ft = ['python', 'python3', 'djangohtml']
-
-
-[[plugins]]
-repo = 'vhda/verilog_systemverilog.vim'
-on_ft = ['verilog', 'verilog_systemverilog']
-hook_source = 'call shimies#init#verilog_systemverilog#hook_source()'
 
 
 [[plugins]]
@@ -236,16 +266,6 @@ on_ft = ['html', 'css']
 [[plugins]]
 repo = 'hail2u/vim-css3-syntax'
 on_ft = ['html', 'css']
-
-
-[[plugins]]
-repo = 'dag/vim-fish'
-on_ft = ['fish']
-
-
-[[plugins]]
-repo = 'tmux-plugins/vim-tmux'
-on_ft = ['tmux']
 
 
 [[plugins]]
@@ -311,6 +331,11 @@ nnoremap <silent> [browser]r :<C-u>call previm#refresh()<CR>
 
 
 [[plugins]]
+repo = 'tpope/vim-fugitive'
+on_cmd = ['Gstatus', 'Gdiffsplit']
+
+
+[[plugins]]
 repo = 'gregsexton/gitv'
 depends = ['vim-fugitive']
 on_cmd = ['Gitv']
@@ -332,12 +357,6 @@ on_source = ['gist-vim']
 repo = 'tyru/restart.vim'
 on_cmd = ['Restart']
 on_event = ['GUIEnter']
-
-
-[[plugins]]
-repo = 'vim-scripts/fcitx.vim'
-if = "has('unix')"
-on_event = ['InsertEnter']
 
 
 # vim: ft=yaml et ts=4 sts=4 sw=4
