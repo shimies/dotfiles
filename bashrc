@@ -90,14 +90,6 @@ I() {
     fi
 }
 
-runmatlab() {
-    if [ $# -ne 1 ]; then
-        echo Usage: runmatlab filename.m
-    else
-        /opt/matlab/r2014a/bin/matlab -nodesktop -nodisplay -nosplash -r "run('$1'); exit;"
-    fi
-}
-
 
 # Configuration list of shopts
 ## though input is only directory name without cd, change directory there
@@ -162,11 +154,15 @@ stty stop undef
 
 # Enable bash completion in interactive shells
 if ! shopt -oq posix; then
-    if [ -r /usr/share/bash-completion/bash_completion ]; then
-        source /usr/share/bash-completion/bash_completion
-    elif [ -r /etc/bash_completion ]; then
-        source /etc/bash_completion
-    elif [ -r /usr/local/etc/profile.d/bash_completion.sh ]; then
-        source /usr/local/etc/profile.d/bash_completion.sh
-    fi
+    paths=(
+        '/usr/share/bash-completion/bash_completion'
+        '/etc/bash_completion'
+        '/usr/local/etc/profile.d/bash_completion.sh'
+    )
+    for i in "$paths"; do
+        if [ -r "$i" ]; then
+            source "$i"
+            break
+        fi
+    done
 fi

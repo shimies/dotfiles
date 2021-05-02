@@ -25,7 +25,9 @@ language C
 language ctype en_US.UTF-8
 
 " Forward slash is used when expanding file names
-set shellslash
+if exists('+shellslash')
+    set shellslash
+endif
 
 
 " --------------------------------------------------
@@ -58,7 +60,7 @@ if has('persistent_undo')
     let &undodir = s:undodir_root
     set undofile
     " Maximum number of changes that can be undone
-    set undolevels=1000
+    set undolevels=1024
     " Maximum number lines to save for undo on a buffer reload
     " set undoreload=0
 endif
@@ -77,8 +79,11 @@ set wildmenu
 set wildmode=longest:full,full
 set history=1024
 
-" Backspace action
-set backspace=start,indent,eol
+" Backspace and other control keys' action
+" - do allow <BS> to take effect only on indents in insert mode
+" - do not allow <BS> and <Space> to move aross lines in normal mode
+set backspace=indent,start,eol
+set whichwrap-=b,s
 
 " Letter type recognized for <C-a>
 set nrformats-=octal
@@ -88,9 +93,6 @@ set virtualedit& virtualedit+=block
 
 " Display multi-byte symbol properly
 set ambiwidth=double
-
-" Allow specified keys that move the cursor left/right
-set whichwrap=b,s
 
 " Scrolling
 set scrolljump=1
@@ -151,6 +153,9 @@ set wrapmargin&
 set formatoptions&
 set paste&
 " set colorcolumn=100
+if v:version >= 800
+    set breakindent
+endif
 
 " Enable mouse control
 set mouse=a
@@ -427,8 +432,15 @@ endfunction
 
 function! MyTabLabel(n, is_active)
     let buflist = tabpagebuflist(a:n)
-    let representing = bufname(buflist[tabpagewinnr(a:n) - 1])
+    let focused = buflist[tabpagewinnr(a:n) - 1]
+    let repname = fnamemodify(bufname(focused), ':.')
     let modified = 0
+
+    if getbufvar(focused, '&filetype') == 'help'
+        let repname = '[HELP]'
+    elseif !a:is_active
+        let repname = fnamemodify(repname, ':t')
+    endif
 
     for i in buflist
         if buflisted(i) && getbufvar(i, '&modified')
@@ -437,11 +449,7 @@ function! MyTabLabel(n, is_active)
         endif
     endfor
 
-    if !a:is_active
-        let representing = fnamemodify(representing, ':p:t')
-    endif
-
-    return len(buflist) . (modified ? '+' : '') . ' ' . representing
+    return len(buflist) . (modified ? '+' : '') . ' ' . repname
 endfunction
 
 
@@ -632,7 +640,6 @@ let g:tex_flavor = 'latex'
 " --------------------------------------------------
 let s:dein_cache_path = expand('$HOME/.cache/vim/dein')
 let s:dein_repository = s:dein_cache_path . '/repos/github.com/Shougo/dein.vim'
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 
 " In the case that bundle directory is not found
 if !isdirectory(s:dein_repository)

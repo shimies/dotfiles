@@ -1,5 +1,5 @@
 if exists("b:did_after_indent")
-	finish
+    finish
 endif
 let b:did_after_indent = 1
 
