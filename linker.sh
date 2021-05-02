@@ -1,24 +1,33 @@
 #!/bin/bash -e
 
-# Get the canonical path to the directory of this file
+# Get the canonical path of the directory containing this file
 dotfiles="$(cd "$(dirname ${0})"; pwd)"
 
-# Link files/directories except this file itself
+# For dotfiles internal links (hook is called per directory)
+hookexec=.hook-on-link
+while IFS= read -r -d '' path; do
+    set +e
+    (cd "$path" && [ -x $hookexec ] && ./$hookexec)
+    set -e
+done < <(find "$dotfiles" -maxdepth 1 -type d -print0)
+
+# Create symlinks to files/directories in dotfiles root directory
 for i in "$dotfiles"/*; do
-    base="${i##*/}"
-    if [ "$base" != "$(basename "${0}")" ]; then
-        dest="$HOME/.$base"
+    filename="${i##*/}"
+    # if filename does not indicate this shell file
+    if [ "$filename" != "$(basename "${0}")" ]; then
+        dest="$HOME/.$filename"
         # if the destination exists and is an actual file, rename it for backup
-        [ -e "$dest" ] && [ ! -L "$dest" ] && mv "$dest" "$HOME/$base.bak"
+        [ -e "$dest" ] && [ ! -L "$dest" ] && mv "$dest" "$HOME/$filename.bak"
 
-        # filter out files of linking according to conditions
+        # prevent files from linking according to conditions
         ### if a filename simply matches a pattern
-        [ "$base" = "README.md" ] && continue
-        [ "$base" = "vrapperrc" ] && continue
+        [ "$filename" = "README.md" ] && continue
+        [ "$filename" = "vrapperrc" ] && continue
         ### despite X config files, if no X server is running
-        [ -z "${base%%X*}" ] && [ -z "$DISPLAY" ] && continue
+        [ -z "${filename%%X*}" ] && [ -z "$DISPLAY" ] && continue
 
-        # create a symbolic link without follwing an existing symbolic link
+        # create a symlink without follwing an existing symbolic link
         ln -fns "$i" "$dest"
     fi
 done

@@ -12,12 +12,12 @@ The existing file is renamed by removing the prefix `.` from and adding the suff
 
 ## Partial Installation
 To prevent all the configuration files from being linked, simply add a if-then-continue statement after the following in `linker.sh`.
-If the filename which is denoted by `$base` matches a pattern or a predicate on the filename holds, `continue` lets the flow move forward to the next iteration, skipping the linking.
+If the filename denoted by `$filename` matches a pattern or a predicate on the filename holds, `continue` lets the flow move forward to the next iteration, skipping the linking.
 ```sh
-# filter out files of linking according to conditions
+# prevent files from linking according to conditions
 ### if a filename simply matches a pattern
-[ "$base" = "README.md" ] && continue
-[ "$base" = "vrapperrc" ] && continue
+[ "$filename" = "README.md" ] && continue
+[ "$filename" = "vrapperrc" ] && continue
 ### despite X config files, if no X server is running
-[ -z "${base%%X*}" ] && [ -z "$DISPLAY" ] && continue
+[ -z "${filename%%X*}" ] && [ -z "$DISPLAY" ] && continue
 ```
