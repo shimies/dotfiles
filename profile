@@ -9,6 +9,13 @@
 # _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
 
+# Locale
+export LANG=C
+export LC_CTYPE=en_US.UTF-8
+export LC_TIME=en_US.UTF-8
+export LC_MESSAGES=en_US.UTF-8
+
+
 # Variables used by external commands
 if type vim &>/dev/null; then
     export EDITOR='vim'
@@ -49,10 +56,22 @@ for i in "${LOCALBINPATH[@]}" "${GNUBINPATH[@]}"; do
     fi
 done
 
-# if running bash
-if [ -n "$BASH" ]; then
-    # include .bashrc if it readable
-    if [ -r $HOME/.bashrc ]; then
-        . $HOME/.bashrc
-    fi
-fi
+# Envs for input methods
+case "$(uname -s 2> /dev/null)" in
+    Linux*|GNU*)
+        if type fcitx &>/dev/null || type fcitx5 &>/dev/null; then
+            imfw=fcitx
+        elif type ibus &>/dev/null; then
+            imfw=ibus
+        elif type scim &>/dev/null; then
+            imfw=scim
+        elif type uim-xim &>/dev/null; then
+            imfw=uim
+        fi
+        if [ -n "$imfw" ]; then
+            [ -z "$XMODIFIERS" ] && export XMODIFIERS=@im=$imfw
+            for e in 'GTK_IM_MODULE' 'QT_IM_MODULE'; do
+                [ -z "$(eval echo '$'$e)" ] && eval export $e=$imfw
+            done
+        fi ;;
+esac

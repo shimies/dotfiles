@@ -8,13 +8,6 @@
 # _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
 
-# Environment variable
-export LANG=C
-export LC_CTYPE=en_US.UTF-8
-export LC_TIME=en_US.UTF-8
-export LC_MESSAGES=en_US.UTF-8
-
-
 # Changing directories
 setopt auto_cd
 setopt auto_pushd
