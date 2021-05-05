@@ -1,0 +1,89 @@
+! ------------------
+! Fonts {{{
+! ------------------
+Xft.antialias: true
+Xft.hinting:   true
+Xft.rgba:      rgb
+Xft.hintstyle: hintfull
+! Xft.dpi:       XFT_DPI
+! }}}
+
+! ------------------
+! rxvt-unicode {{{
+! ------------------
+URxvt.termName: xterm-256color
+URxvt.geometry: 100x52
+URxvt.scrollBar: false
+URxvt.scrollTtyOutput: false
+URxvt.scrollWithBuffer: false
+URxvt.scrollTtyKeypress: true
+URxvt.secondaryScreen: true
+URxvt.secondaryScroll: false
+URxvt.cursorBlink: true
+URxvt.cursorUnderline: false
+URxvt.pointerBlank: true
+URxvt.saveLines: 0
+! URxvt.fading: 30
+URxvt.visualBell: true
+URxvt.urgentOnBell: false
+URxvt.utmpInhibit: false
+! }}}
+
+! ------------------
+! rxvt-unicode font and spacing {{{
+! ------------------
+URxvt.font: xft:monospace:size=12
+URxvt.letterSpace: -1
+URxvt.lineSpace: 0
+! }}}
+
+! ------------------
+! rxvt-unicode font and color scheme and opacity {{{
+! ------------------
+URxvt.depth:           32
+URxvt.color0:          [95]#282828
+URxvt.color1:          [95]#cc241d
+URxvt.color2:          [95]#98971a
+URxvt.color3:          [95]#d79921
+URxvt.color4:          [95]#458588
+URxvt.color5:          [95]#b16286
+URxvt.color6:          [95]#689d6a
+URxvt.color7:          [95]#a89984
+URxvt.color8:          [95]#928374
+URxvt.color9:          [95]#fb4934
+URxvt.color10:         [95]#b8bb26
+URxvt.color11:         [95]#fabd2f
+URxvt.color12:         [95]#83a598
+URxvt.color13:         [95]#d3869b
+URxvt.color14:         [95]#8ec07c
+URxvt.color15:         [95]#ebdbb2
+URxvt.foreground:      [95]#ffffff
+URxvt.background:      [95]#1c1c1c
+URxvt.colorIT:         [95]#8ec07c
+URxvt.colorBD:         [95]#fe8019
+URxvt.colorUL:         [95]#83a598
+! URxvt.scrollColor:     [95]#504945
+! URxvt.troughColor:     [90]#3c3836
+! }}}
+
+! ------------------
+! rxvt-unicode extensions {{{
+! ------------------
+URxvt.perl-ext:
+URxvt.perl-ext-common: default,xim-onthespot,resize-font,fullscreen
+
+! xim-onthespot ::
+URxvt.preeditType: OnTheSpot
+
+! resize-font ::
+URxvt.resize-font.step: 1
+! default keybinding in use {{{
+! URxvt.keysym.C-minus: resize-font:smaller
+! URxvt.keysym.C-plus: resize-font:bigger
+! URxvt.keysym.C-equal: resize-font:reset
+! URxvt.keysym.C-question: resize-font:show
+! }}}
+
+! fullscreen ::
+URxvt.keysym.F11: perl:fullscreen:switch
+! }}}
