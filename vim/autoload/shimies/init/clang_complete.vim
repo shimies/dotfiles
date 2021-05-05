@@ -7,16 +7,18 @@ function! shimies#init#clang_complete#hook_source() abort
 
 
     if has('mac')
-        let s:dirlist = [ fnamemodify(system('mdfind -name libclang.dylib'), ':p:h') ]
+        let s:direxps = [ fnamemodify(system('mdfind -name libclang.dylib'), ':p:h') ]
+        let s:lib_suffix = 'dylib'
     else
-        let s:dirlist = [ '/opt/clang', '/usr/lib/llvm-3.8/lib', '/usr/lib/llvm-6.0/lib' ]
+        let s:direxps = [ '/opt/clang', '/usr/lib', '/usr/lib/llvm*/**/lib' ]
+        let s:lib_suffix = 'so'
     endif
-    for s:path in s:dirlist
-        if isdirectory(s:path)
-            for s:file in split(globpath(s:path, 'libclang*.*'), '\n')
+    for s:direxp in s:direxps
+        for s:dir in glob(s:direxp, v:false, v:true)
+            for s:file in globpath(s:dir, printf('libclang.%s', s:lib_suffix), v:false, v:true)
                 let g:clang_library_path = s:file
                 break
             endfor
-        endif
+        endfor
     endfor
 endfunction
