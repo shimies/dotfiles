@@ -40,8 +40,9 @@ URxvt.lineSpace: 0
 ! ------------------
 ! rxvt-unicode font and color scheme and opacity {{{
 ! ------------------
+! Color palette is based on gruvbox with an exception of black and white
 URxvt.depth:           32
-URxvt.color0:          [95]#282828
+URxvt.color0:          [95]#1c1c1c
 URxvt.color1:          [95]#cc241d
 URxvt.color2:          [95]#98971a
 URxvt.color3:          [95]#d79921
@@ -56,14 +57,14 @@ URxvt.color11:         [95]#fabd2f
 URxvt.color12:         [95]#83a598
 URxvt.color13:         [95]#d3869b
 URxvt.color14:         [95]#8ec07c
-URxvt.color15:         [95]#ebdbb2
-URxvt.foreground:      [95]#ffffff
+URxvt.color15:         [95]#fbf1c7
+URxvt.foreground:      [95]#fbf1c7
 URxvt.background:      [95]#1c1c1c
-URxvt.colorIT:         [95]#8ec07c
-URxvt.colorBD:         [95]#fe8019
+URxvt.colorIT:         [95]#fabd2f
+URxvt.colorBD:         [95]#b8bb26
 URxvt.colorUL:         [95]#83a598
 ! URxvt.scrollColor:     [95]#504945
-! URxvt.troughColor:     [90]#3c3836
+! URxvt.troughColor:     [95]#3c3836
 ! }}}
 
 ! ------------------
