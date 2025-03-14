@@ -1,0 +1,10 @@
+[merge]
+	tool = vimdiff
+[diff]
+	tool = vimdiff  # override merge.tool
+#[pager]
+#	diff = diff-highlight | $PAGER
+#	log = diff-highlight | $PAGER
+#	show = diff-highlight | $PAGER
+#[interactive]
+#	diffFilter = diff-highlight
