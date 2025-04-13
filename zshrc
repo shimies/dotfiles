@@ -209,7 +209,7 @@ if is-at-least 4.3.11; then
     # Note:
     #   each hook function is called on every message on either formats or actionformats
     #   in other words, at most they are called three times since actionformats takes three messages
-    zstyle ':vcs_info:git+set-message:*' hooks git-hook-begin git-untracked git-push-status git-nomerge-branch git-stash-count
+    zstyle ':vcs_info:git+set-message:*' hooks git-hook-begin git-untracked git-ahead-behind git-stash-count
 
     function +vi-git-get-remote-info()
     {
@@ -226,8 +226,22 @@ if is-at-least 4.3.11; then
                 remote="${remotes[1]}"
             fi
             if [[ -n "$remote" ]]; then
-                local remote_info="$(command git remote show "$remote" 2>/dev/null)"
-                default_branch="${${remote_info/(#b)*HEAD branch*:[[:blank:]]#([[:graph:]]##)*/$match[1]}:#$remote_info}"
+                # # default branch could be obtained by two-liners below but it is slow because
+                # # `git remote show` makes an actual request to the remote. instead we use
+                # # `git symbolic-ref` to find the branch HEAD on the remote points to. the
+                # # information might be outdated but changing the default branch on the remote does
+                # # not happen so frequently that it is okay in most cases.
+                # local remote_info="$(command git remote show "$remote" 2>/dev/null)"
+                # default_branch="${${remote_info/(#b)*HEAD branch*:[[:blank:]]#([[:graph:]]##)*/$match[1]}:#$remote_info}"
+                for _ in {0..1}; do
+                    local ref_remote_head="$(command git symbolic-ref refs/remotes/$remote/HEAD 2>/dev/null)"
+                    if [[ $? -ne 0 ]]; then
+                        command git remote set-head "$remote" --auto 2>/dev/null 1>&2
+                        continue
+                    fi
+                    default_branch=${ref_remote_head##refs/remotes/$remote/}
+                    break
+                done
             else
                 local branches=("${(@f)$(command git rev-parse --symbolic --branches 2>/dev/null)}")
                 local candidates=("${(@M)branches:#(main|master)}")
@@ -272,38 +286,31 @@ if is-at-least 4.3.11; then
         fi
     }
 
-    # hook function for unpushed commits
-    # which additionally prints '(pN)' where N is the number of unpushed commits
-    function +vi-git-push-status()
+    # hook function for commits ahead or behind of the base branch (defined below)
+    # which additionally prints
+    #   - '(p<B|A)' when the branch has the remote-tracking branch
+    #   - '(m<B|A)' when the branch does not have the remote-tracking branch
+    # where A and B are the number of commits ahead or behind (respectively) of
+    #   - (for (pX)) the remote-tracking branch
+    #   - (for (mX)) the default branch configured by the remote (see `git remote show origin` for example)
+    function +vi-git-ahead-behind()
     {
-        local remote="${user_data[remote]}"
-        local default_branch="${user_data[default_branch]}"
-        [[ -z "$remote" || -z "$default_branch" ]] && return 0
-
-        # do nothing if it is not the default branch
-        [[ "${hook_com[branch]}" != "$default_branch" ]] && return 0
-
-        local raw="$(command git rev-list "${remote}/${default_branch}..${default_branch}" 2>/dev/null)"
-        if [[ -n "$raw" ]]; then
-            local commits_ahead=("${(@f)raw}")
-            hook_com[misc]+="(p${#commits_ahead[@]})"
+        local prefix='p'  # push
+        local base_branch="$(command git rev-parse --abbrev-ref --symbolic-full-name @{upstream} 2>/dev/null)"
+        if [[ -z "$base_branch" ]]; then
+            prefix='m'  # merge
+            base_branch=${user_data[default_branch]}
         fi
-    }
+        # skip if the base branch (to be compared) cannot be determined or is the current branch itself
+        [[ -z "$base_branch" || "$base_branch" = "${hook_com[branch]}" ]] && return 0
 
-    # hook function for unmerged commits
-    # which additionally prints '(mN)' where N is the number of unmerged commits
-    function +vi-git-nomerge-branch()
-    {
-        local default_branch=${user_data[default_branch]}
-        [[ -z "$default_branch" ]] && return 0
-
-        # do nothing if it is the default branch
-        [[ "${hook_com[branch]}" = "$default_branch" ]] && return 0
-
-        local raw="$(command git rev-list "${default_branch}..${hook_com[branch]}" 2>/dev/null)"
-        if [[ -n "$raw" ]]; then
-            local commits_unmerged=("${(@f)raw}")
-            hook_com[misc]+="(m${#commits_unmerged[@]})"
+        local raw="$(command git rev-list --left-right --count "${base_branch}...${hook_com[branch]}" 2>/dev/null)"
+        local pair=("${(@s: :)${raw//[[:space:]]/ }}")
+        if [[ "${#pair[@]}" -eq 2 ]]; then
+            local behind="${pair[1]}"
+            local ahead="${pair[2]}"
+            local status_expr="${status_expr}<${behind}|${ahead}"
+            hook_com[misc]+="(${prefix}${status_expr})"
         fi
     }
 
