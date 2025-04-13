@@ -2,10 +2,14 @@
 	path = .gitconfig-user
 	path = .gitconfig-diff
 [alias]
-	l = log --pretty=tformat:'%C(yellow)%h%Creset - %C(cyan)%an%Creset - %s %Cgreen(%cr)%Creset'
+	l  = log --pretty=tformat:'%C(yellow)%h%Creset - %C(cyan)%an%Creset - %s %Cgreen(%cr)%Creset'
+	lb = log --pretty=tformat:'%C(yellow)%h%Creset - %C(cyan)%an%Creset -%C(auto)%d%Creset %s %Cgreen(%cr)%Creset'
 	hist = log --graph --decorate --oneline --all
 	last = log -1 HEAD
 	blame = -w -C -C -C
+	ab = !"f() { git rev-list --left-right --count $1...HEAD | sed -E 's!^([[:digit:]]+)[[:space:]]+([[:digit:]]+)$!< \\1 commits behind | \\2 commits ahead!g'; }; f"
+	l2 = !"f() { git l $1..HEAD; }; f"
+	l3 = !"f() { git log --left-right --pretty=tformat:'%m | %C(yellow)%h%Creset - %C(cyan)%an%Creset - %s %Cgreen(%cr)%Creset' $1...HEAD; }; f"
 [column]
 	ui = auto
 [branch]
