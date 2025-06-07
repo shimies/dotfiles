@@ -51,7 +51,7 @@ case "$(uname -s 2> /dev/null)" in
         ,enable-homebrew() {
             if [ -d '/opt/homebrew' ]; then
                 eval $(/opt/homebrew/bin/brew shellenv)
-                sdkman_dir="$(brew --prefix sdkman-cli)/libexec"
+                sdkman_dir="$(brew --prefix sdkman-cli 2>/dev/null)/libexec"
                 if [ -s "$sdkman_dir/bin/sdkman-init.sh" ]; then
                     export SDKMAN_DIR="$sdkman_dir"
                     . "$SDKMAN_DIR/bin/sdkman-init.sh"
