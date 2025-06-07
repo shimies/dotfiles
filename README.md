@@ -1,7 +1,8 @@
 ## Quick Start
 A shell script is prepared to quickly deploy the configuration files.
+
 ```sh
-git clone https://github.com/shimies/dotfiles.git
+git clone --recursive https://github.com/shimies/dotfiles.git
 ./dotfiles/linker.sh
 ```
 `linker.sh` creates a symbolic link to each configuration file or directory in `$HOME`.
