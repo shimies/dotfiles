@@ -1,6 +1,8 @@
 [include]
 	path = .gitconfig-user
 	path = .gitconfig-diff
+[user]
+	useConfigOnly = true
 [alias]
 	l  = log --pretty=tformat:'%C(yellow)%h%Creset - %C(cyan)%an%Creset - %s %Cgreen(%cr)%Creset'
 	lb = log --pretty=tformat:'%C(yellow)%h%Creset - %C(cyan)%an%Creset -%C(auto)%d%Creset %s %Cgreen(%cr)%Creset'
@@ -13,24 +15,28 @@
 [column]
 	ui = auto
 [branch]
-	autoSetupMerge = true  # imply `--track` when the starting point is a remote-tracking branch
+	autoSetupMerge = true  # implies `--track` when the starting point is a remote-tracking branch
 	sort = -committerdate
 [fetch]
-	prune = true  # imply `--prune`
+	prune = true  # implies `--prune`
 [push]
-	autoSetupRemote = true  # imply `--set-upstream`
+	autoSetupRemote = true  # implies `--set-upstream`
 [rebase]
-	autoStash = true  # imply `--autostash`
+	autoStash = true  # implies `--autostash`
 	autoSquash = true
 	updateRefs = true
 [merge]
-	autoStash = true  # imply `--autostash`
+	autoStash = true  # implies `--autostash`
 	conflictStyle = zdiff3
 [diff]
 	algorithm = histogram
 	mnemonicPrefix = true
 [difftool]
 	prompt = false
+[tag]
+	sort = -v:refname
+[versionsort]
+	suffix = -rc
 [filter "lfs"]
 	# configs inserted on `git lfs install`
 	# see: https://github.com/git-lfs/git-lfs/tree/main/docs
