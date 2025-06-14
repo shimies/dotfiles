@@ -1,0 +1,21 @@
+fix = true
+line-length = 110
+
+[lint]
+select = [
+  "E",    # pycodestyle
+  "F",    # Pyflakes
+  "I",    # isort
+  "UP",   # pyupgrade
+  "B",    # flake8-bugbear
+  "SIM",  # flake8-simplify
+  "C4",   # flake8-comprehensions
+  "ANN",  # flake8-annotations
+  "PT",   # flake8-pytest-style
+  "PERF", # Perflint
+  "D",    # Pydocstyle
+]
+ignore = []
+
+[lint.pydocstyle]
+convention = "google"
