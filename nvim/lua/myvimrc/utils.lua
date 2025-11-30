@@ -1,20 +1,33 @@
 local M = {}
 
 --==--==--==--==--==--==--==--==--==--==--==--==--
+-- Path manipulation
+--==--==--==--==--==--==--==--==--==--==--==--==--
+local function path_of_this_dir()
+    local file_path = debug.getinfo(2, "S").source
+    if file_path:sub(1, 1) == "@" then
+        return vim.fs.dirname(file_path:sub(2, file_path:len()))
+    else
+        error("location of calling function could not be determined")
+    end
+end
+
+--==--==--==--==--==--==--==--==--==--==--==--==--
 -- OS detection
 --==--==--==--==--==--==--==--==--==--==--==--==--
 local function is_windows()
-    return vim.fn.has('win64') == 1 or vim.fn.has('win32') == 1 or vim.fn.has('win16') == 1
+    return vim.fn.has("win64") == 1 or vim.fn.has("win32") == 1 or vim.fn.has("win16") == 1
 end
 
 local function is_cygwin()
-    return vim.fn.has('win32unix') == 1
+    return vim.fn.has("win32unix") == 1
 end
 
 local function is_real_tty()
-    return vim.env.TERM == 'linux'
+    return vim.env.TERM == "linux"
 end
 
+-- TODO
 -- function M.organizeImports(bufnr)
 --     local params = vim.lsp.util.make_range_params()
 --     params.context = { only = { 'source.organizeImports' } }
@@ -34,7 +47,7 @@ end
 -- Clearing buffer without closing windows
 --==--==--==--==--==--==--==--==--==--==--==--==--
 local function buflisted(bufnr)
-    return vim.api.nvim_buf_get_option(bufnr, 'buflisted')
+    return vim.api.nvim_get_option_value("buflisted", { buf = bufnr })
 end
 
 local function bufexists(bufnr)
@@ -56,9 +69,9 @@ local function change_buffer_smart(winnr, target)
         vim.api.nvim_win_call(winnr, function()
             -- bufnr('#') is window-scoped
             -- i.e. different windows could show different output of bufnr('#')
-            local altbuf = vim.fn.bufnr('#')
+            local altbuf = vim.fn.bufnr("#")
             if altbuf > 0 and buflisted(altbuf) and altbuf ~= target then
-                vim.cmd.buffer('#')
+                vim.cmd.buffer("#")
             else
                 vim.cmd.bnext()
             end
@@ -67,7 +80,7 @@ local function change_buffer_smart(winnr, target)
 end
 
 local function clear_buffer(is_wipeout)
-    local command = (is_wipeout and 'bwipeout') or 'bdelete'
+    local command = (is_wipeout and "bwipeout") or "bdelete"
     local currbuf = vim.api.nvim_get_current_buf()
 
     -- if not listed, execute the command with force, closing the window
@@ -99,9 +112,13 @@ local function clear_buffer(is_wipeout)
             vim.cmd.enew()
             to = vim.api.nvim_get_current_buf()
         end
-        change_buffer = function(winnr) change_buffer_fixed(winnr, currbuf, to) end
+        change_buffer = function(winnr)
+            change_buffer_fixed(winnr, currbuf, to)
+        end
     else
-        change_buffer = function(winnr) change_buffer_smart(winnr, currbuf) end
+        change_buffer = function(winnr)
+            change_buffer_smart(winnr, currbuf)
+        end
     end
     for _, winnr in ipairs(vim.api.nvim_list_wins()) do
         change_buffer(winnr)
@@ -111,16 +128,16 @@ local function clear_buffer(is_wipeout)
     vim.cmd { cmd = command, args = { currbuf }, bang = true }
     if listedbufs == 0 then
         vim.opt_local.buflisted = true
-        vim.opt_local.bufhidden = ''
-        vim.opt_local.buftype   = ''
+        vim.opt_local.bufhidden = ""
+        vim.opt_local.buftype = ""
     end
 end
-
 
 --==--==--==--==--==--==--==--==--==--==--==--==--
 -- Exports
 --==--==--==--==--==--==--==--==--==--==--==--==--
 M = {
+    path_of_this_dir = path_of_this_dir,
     is_windows = is_windows,
     is_cygwin = is_cygwin,
     is_real_tty = is_real_tty,
