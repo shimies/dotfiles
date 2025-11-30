@@ -234,7 +234,8 @@ if is-at-least 4.3.11; then
                 # local remote_info="$(command git remote show "$remote" 2>/dev/null)"
                 # default_branch="${${remote_info/(#b)*HEAD branch*:[[:blank:]]#([[:graph:]]##)*/$match[1]}:#$remote_info}"
                 for _ in {0..1}; do
-                    local ref_remote_head="$(command git symbolic-ref refs/remotes/$remote/HEAD 2>/dev/null)"
+                    local ref_remote_head
+                    ref_remote_head="$(command git symbolic-ref refs/remotes/$remote/HEAD 2>/dev/null)"
                     if [[ $? -ne 0 ]]; then
                         command git remote set-head "$remote" --auto 2>/dev/null 1>&2
                         continue
