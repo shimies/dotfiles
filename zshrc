@@ -80,6 +80,8 @@ alias pathlist='echo -e ${PATH//:/\\n}'
 
 
 # Keybindings
+# * `showkey -a` allows you to get ascii keycodes as you type
+# * e.g. `^[` is shown when ESC is pressed
 bindkey -d  # Reset all keybindings
 bindkey -e  # Use emacs keybindings even if our EDITOR is set to vi
 bindkey '^[[Z' reverse-menu-complete  # Shift + Tab
@@ -87,9 +89,27 @@ bindkey '^[[3~' delete-char           # Delete
 bindkey '^[[1~' beginning-of-line     # Home
 bindkey '^[[4~' end-of-line           # End
 
+## Emulate `character-search`-related commands of bash
+bindkey -r '^X^F'
+bindkey '^]'   vi-find-next-char
+bindkey '^[^]' vi-find-prev-char
+
 ## Enable forward searching for history with ^S
 ## check key-assignment with `stty -a`, and verify ^S is assigned to stop
 stty stop undef
+
+## Enable (external) fzf based keybindings
+if type fzf 1>/dev/null 2>&1; then
+    function fzf-select-history()
+    {
+        local cmd="$(history -n -r 1 | fzf --query "$LBUFFER" --reverse)"
+        BUFFER="${cmd}"
+        CURSOR="${#cmd}"
+        zle reset-prompt
+    }
+    zle -N fzf-select-history
+    bindkey '^[^R' fzf-select-history
+fi
 
 
 # Hook functions
