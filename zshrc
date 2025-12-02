@@ -112,6 +112,22 @@ if type fzf 1>/dev/null 2>&1; then
 fi
 
 
+# Functions
+local_fn_path="$HOME/.zsh/functions"
+if [[ -o login ]]; then
+    [[ ! -e "$local_fn_path" ]] && mkdir -p "$local_fn_path"
+    fn_names=("${(@f)$(typeset -f | perl -ne 'print "$1\n" if /^(,[\p{Graph}]+).*$/' 2>/dev/null)}")
+    for name in "${fn_names[@]}"; do
+        typeset -f "$name" > "$HOME/.zsh/functions/${name}"
+    done
+else
+    fpath=("$local_fn_path" $fpath)
+    for f in "$local_fn_path"/*; do
+        autoload -Uk "$(basename "$f")"
+    done
+fi
+
+
 # Hook functions
 ## On cd and pushd commands
 function chpwd() {
